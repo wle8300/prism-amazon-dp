@@ -1,0 +1,23 @@
+{
+  "name": "prism-amazon-dp",
+  "version": "0.1.0",
+  "description": "Prism definitions for an Amazon product",
+  "main": "index.js",
+  "dependencies": {
+    "scraperjs": "^0.3.3"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "tape test/*.js"
+  },
+  "keywords": [
+    "prism",
+    "amazon-product",
+    "amazon",
+    "product",
+    "api",
+    "apac"
+  ],
+  "author": "William Le <williamle8300@gmail.com>",
+  "license": "ISC"
+}
