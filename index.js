@@ -1,155 +1,89 @@
 "use strict"
 
-var scraperjs = require('scraperjs');
+var prismUtils = require('prism-utils');
 
-scraperjs.DynamicScraper
+/**
+ * prism-amazon-dp
+ *
+ * @return Array
+ */
 
-  // .create({url: 'http://amazon.com/gp/aw/d/' +ASIN+ '/?sp=1&vs=1'})
-  .create({url: 'http://amazon.com/gp/aw/d/1449331815/?sp=1&vs=1'})
-  .scrape(
-    
+module.exports = function () {
+  return {
+      
     /**
-     * Execute theMobileScarletPimpernel
-     * in Amazon/gp/aw/d/[ASIN]/?sp=1&vs=1
+     * ASIN
+     * Amazon Standard Identification Number
      */
-   
-    function () {
-            
-      var jQuery = jQuery || $;
-
-      var pageAsString;
-      var scrapedAmazonProduct = {
-        timeStamp: new Date(Date.now()).toString(),
-        price: 'N/A',
-        stock: 'N/A',
-      };
-      
-      /**
-       * Get <body> innerText
-       * in a {String}
-       */
-      
-      pageAsString = document.getElementsByTagName('body')[0].innerText;
-      
-      /**
-       * Error
-       * 
-       * Just return a blank scrapedAmazonProduct
-       * with "pageAsString" to debug
-       */
-      
-      if (pageAsString.match(/having\strouble/g)) {
-        scrapedAmazonProduct.pageAsString = pageAsString.replace(/\s/g, '');
-        return scrapedAmazonProduct;
+    
+    ASIN: [
+      //Generic
+      function () {
+        return prismUtils.fom('input[name^="ASIN"]').value;
       }
-      
-      /**
-       * theMobileScarletPimpernel
-       */
+    ],
     
-      scrapedAmazonProduct.price = (function(pageAsString) {
-
-        var pricesArray;
-        var price;
-        var mainPattern = /(!!!!)?(List)?(!!!!)?Price?:!!!!\$\d+\.?(\d+)?!!!!/g;
-        var usingSalePrice;    //using sale "Price"
-        var usingNonSalePrice; //using "List Price"
-
-        //Explode ALL whitespace with "!!!!"
-        pageAsString = pageAsString.replace(/\s/g, '!!!!');
-
-        //Execute first regex
-        pricesArray = pageAsString.match(mainPattern) ? pageAsString.match(mainPattern) : null;
-
-        //Must match. Length <= 3.
-        return pricesArray && pricesArray.length <= 3 ? proceed() : 'N/A';
-        
-        //Additional heuristics
-        function proceed() {
-
-          //De-explode "!!!!"
-          jQuery.each(pricesArray, function (i, price) {
-            pricesArray[i] = price.replace(/!!!!/g, '')
-          });
-
-          /**
-           * When both ListPrice and SalePrice
-           * are respectively in first
-           * and second position
-           */
-
-          usingSalePrice = pricesArray[0].indexOf('ListPrice') === 0 && pricesArray[1].indexOf('Price') === 0 ? true : false
-          usingNonSalePrice = pricesArray[0].indexOf('Price') === 0;
-          
-          /**
-           * Using sale "Price"
-           */
-          
-          if (usingSalePrice) {
-            return pricesArray[1].replace('Price:', '');
-          }
-
-          /**
-           * Using "List Price"
-           */
-          
-          if (usingNonSalePrice) {
-            return pricesArray[0].replace(/(List)?Price:/, '');
-          }
-          
-          /**
-           * Unexpected values in {Array} pricesArray...
-           */
-          
-          else return 'N/A';
-
-        }
-
-      }(pageAsString));
-      scrapedAmazonProduct.stock = (function(pageAsString) {
-
-        var stock;
-        var mainPattern = /####([A-Za-z\s]*?)?(\d+)?( left)?\s?in stock.*?####/gi;
-
-        //Explode newlines using "####"
-        pageAsString = pageAsString.replace(/\n/g, '####');
-
-        //Execute first regex
-        stock = pageAsString.match(mainPattern) ? pageAsString.match(mainPattern) : null;
-
-        //Must be only 1 match
-        return stock && stock.length === 1 ? proceed() : 'N/A';
-        
-        //Additional heuristics
-        function proceed() {
-
-          //De-explode "####"
-          stock = stock[0].replace(/####/g, '').trim();
-
-          //Execute finer regexes
-          stock = stock.replace(/in stock\.?\s?.*$/i, 'In Stock.')
-          stock = stock.replace(/Only (\d*?) left in stock.*/i, '$1');
-
-          //Done.
-          return stock;
-
-        }
-
-      }(pageAsString));          
-
-      return scrapedAmazonProduct;
-    
-    },
-  
     /**
-     * Prepare to
-     * return the results
+     * The Product Name®
      */
-  
-    function(scrapedAmazonProduct) {
+    
+    name: [
+      //Generic
+      function () {
+        return prismUtils.only('#productTitle').innerText.trim();
+      },
+      // Kindle devices
+      function () {
+        return prismUtils.only('#btAsinTitle').innerText.trim();
+      },
+      // Downloadable products (aka, "Webstore")
+      function () {
+        return prismUtils.fom('h1.a-size-large');
+      },
+      // for wine
+      function () {
+        return prismUtils.only('#item_name').innerText.trim();
+      }
+    ],
+    price: [
+      // Generic
+      function () {
+        return prismUtils.only('#priceblock_ourprice').innerText.trim();
+      },
+      // Generic1
+      function () {
+        return prismUtils.only('#priceblock_saleprice').innerText.trim();
+      },
+      // Generic2
+      function () {
+        return prismUtils.only('#miniATF_price').innerText.trim();
+      },
+      // Amazon GoldBox (Amazon's "deals" subsidiary webstore)
+      function () {
+        return prismUtils.only('#priceblock_dealprice span').innerText.trim();
+      },
+      // Music (The non-"Prime" price)
+      '[id^="dmusic_digital_buy_button_"] span.a-text-bold',
+      // Legacy markup (I think.)
+      '#actualPriceContent .priceLarge',
+      // Kindle Fire AC130
+      '#buyingPriceValue b',
+      // Kindle books
+      '#priceBlock b[class^="price"]',
+      // Cell phone (http://www.amazon.com/dp/B00L9OVC94)
+      '#current-price',
       
-      deferred.resolve(scrapedAmazonProduct);
-  
-    }
-  
-  );
+      // Books (http://www.amazon.com/dp/0544104404/)
+      '#tmmSwatches .swatchElement.selected .a-color-price',
+      // Books (http://www.amazon.com/dp/0415873843)
+      '#buyNewSection .offer-price'
+      
+      
+    ],
+    photo: [],
+    description: [],
+    inventory: [],
+    isPrime: []
+    
+  };
+}
