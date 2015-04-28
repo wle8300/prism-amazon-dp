@@ -1,6 +1,6 @@
 {
   "name": "prism-amazon-dp",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "description": "Get amazon product metadata. Prism definitions for http://amazon.com/dp/[ASIN]",
   "main": "index.js",
   "dependencies": {
