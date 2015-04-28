@@ -1,10 +1,16 @@
-# npm install prism-amazon-dp
+# Prism for Amazon products
 
 A prism that gets you an amazon product's: `ASIN`, `name`, `price`, `currency`, `photo`, `stock`, `stars`, `reviewCount`
 
 Only works on this path: http://amazon.com/dp/<ASIN>?psc=1
 
 Note: "dp" stands for "detail page"
+
+# Installation
+
+```
+npm install prism-amazon-dp
+```
 
 # Usage
 
