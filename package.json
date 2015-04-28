@@ -4,8 +4,7 @@
   "description": "Get amazon product metadata. Prism definitions for http://amazon.com/dp/<ASIN>?psc=1",
   "main": "index.js",
   "dependencies": {
-    "country-data": "0.0.19",
-    "uniq": "^1.0.1"
+    "country-data": "0.0.19"
   },
   "devDependencies": {},
   "scripts": {
