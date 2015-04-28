@@ -8,9 +8,7 @@ Note: "dp" stands for "detail page"
 
 # Installation
 
-```
 npm install [prism-amazon-dp](https://www.npmjs.com/package/prism-amazon-dp)
-```
 
 # Usage
 
