@@ -1,4 +1,4 @@
-# Prism for Amazon products
+# Amazon product metadata (prism)
 
 A prism that gets you an amazon product's: `ASIN`, `name`, `price`, `currency`, `photo`, `stock`, `stars`, `reviewCount`
 
@@ -9,7 +9,7 @@ Note: "dp" stands for "detail page"
 # Installation
 
 ```
-npm install prism-amazon-dp
+npm install [prism-amazon-dp](https://www.npmjs.com/package/prism-amazon-dp)
 ```
 
 # Usage
