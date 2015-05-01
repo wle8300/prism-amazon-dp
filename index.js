@@ -78,7 +78,7 @@ module.exports = {
       }
     },
     {
-      // Generic1
+      // Generic1 
       $select: document.querySelector('#priceblock_saleprice'),
       refract: function () {
         if (this.$select) return this.$select.innerText.trim();
