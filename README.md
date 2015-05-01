@@ -12,7 +12,7 @@ npm install [prism-amazon-dp](https://www.npmjs.com/package/prism-amazon-dp)
 
 # Usage
 
-Note: 'prism-viewer' is a ficticious npm module. Implementation for it is arbitrary.
+Note: `prism-viewer` is a ficticious npm module.
 
 ```javascript
 var prismViewer   = require('prism-viewer');
