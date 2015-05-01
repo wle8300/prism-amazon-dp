@@ -12,6 +12,8 @@ npm install [prism-amazon-dp](https://www.npmjs.com/package/prism-amazon-dp)
 
 # Usage
 
+Note: 'prism-viewer' is a ficticious npm module. Implementation for it is arbitrary.
+
 ```javascript
 var prismViewer   = require('prism-viewer');
 var prismAmazonDp = require('prism-amazon-dp');
